@@ -1,12 +1,14 @@
 <template>
   <Layout>
+    <el-row :gutter="12">
+      <el-col v-for="{ node } in $page.allContentfulPost.edges" :key="node._id">
+        <h2 v-html="node.title"/>
+        <router-link :to="node.path">Read more</router-link>
+      </el-col>
+    </el-row>
     <h1>Welcome to my blog :)</h1>
     <Pager :info="$page.allContentfulPost.pageInfo"/>
     <ul>
-      <li v-for="{ node } in $page.allContentfulPost.edges" :key="node._id">
-        <h2 v-html="node.title"/>
-        <router-link :to="node.path">Read more</router-link>
-      </li>
     </ul>
   </Layout>
 </template>
