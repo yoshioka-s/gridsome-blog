@@ -1,6 +1,6 @@
 <template>
   <Layout>
-    <Pager :info="$page.allContentfulPost.pageInfo"/>
+    <Pager :info="pageInfo"/>
     <el-row :gutter="12">
       <post-link v-for="post in posts"
       :key="post.id"
@@ -50,8 +50,17 @@ export default {
     PostLink
   },
   computed: {
+    pageInfo () {
+      if (this.$page.allContentfulPost) {
+        return this.$page.allContentfulPost.pageInfo
+      }
+      return {}
+    },
     posts () {
-      return this.$page.allContentfulPost.edges.map(edge => edge.node)
+      if (this.$page.allContentfulPost) {
+        return this.$page.allContentfulPost.edges.map(edge => edge.node)
+      }
+      return []
     }
   }
 }
