@@ -16,10 +16,56 @@
         <slot/>
       </el-main>
       <el-aside width="280px">
+        <post-link-aside v-for="post in posts"
+        :key="post.id"
+        :path="post.path"
+        :title="post.title"
+        :thumbnail="post.thumbnail ? post.thumbnail.file.url.src : ''"
+        :date="post.createdAt"/>
       </el-aside>
     </el-container>
   </el-container>
 </template>
+
+<static-query>
+query Common {
+  allContentfulPost (perPage: 10) {
+    pageInfo {
+      totalPages
+      currentPage
+    }
+    edges {
+      node {
+        id
+        title
+        path
+        createdAt
+        thumbnail {
+          path
+          title
+          file {
+            url
+            fileName
+            contentType
+          }
+        }
+      }
+    }
+  }
+}
+</static-query>
+
+<script>
+import PostLinkAside from '../components/PostLinkAside.vue'
+export default {
+  components: { PostLinkAside },
+  computed: {
+    posts () {
+      return this.$static.allContentfulPost.edges.map(edge => edge.node)
+    }
+  }
+}
+</script>
 
 <style>
 body {

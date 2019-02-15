@@ -1,15 +1,14 @@
 <template>
   <Layout>
-    <el-row :gutter="12">
-      <el-col v-for="{ node } in $page.allContentfulPost.edges" :key="node._id">
-        <h2 v-html="node.title"/>
-        <router-link :to="node.path">Read more</router-link>
-      </el-col>
-    </el-row>
-    <h1>Welcome to my blog :)</h1>
     <Pager :info="$page.allContentfulPost.pageInfo"/>
-    <ul>
-    </ul>
+    <el-row :gutter="12">
+      <post-link v-for="post in posts"
+      :key="post.id"
+      :path="post.path"
+      :title="post.title"
+      :thumbnail="post.thumbnail ? post.thumbnail.file.url.src : ''"
+      :date="post.createdAt"/>
+    </el-row>
   </Layout>
 </template>
 
@@ -25,6 +24,16 @@ query Home ($page: Int) {
         id
         title
         path
+        createdAt
+        thumbnail {
+          path
+          title
+          file {
+            url
+            fileName
+            contentType
+          }
+        }
       }
     }
   }
@@ -33,10 +42,17 @@ query Home ($page: Int) {
 
 <script>
 import { Pager } from 'gridsome'
+import PostLink from '../components/PostLink.vue'
 
 export default {
   components: {
-    Pager
+    Pager,
+    PostLink
+  },
+  computed: {
+    posts () {
+      return this.$page.allContentfulPost.edges.map(edge => edge.node)
+    }
   }
 }
 </script>
