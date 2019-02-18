@@ -2,6 +2,8 @@ require('dotenv').load()
 
 module.exports = {
   siteName: 'イメジン開発ブログ',
+  siteDescription: '株式会社イメジンの開発者ブログです。',
+  siteUrl: 'https://dev.imejin.biz/',
   plugins: [
     {
       use: '@gridsome/source-contentful',
