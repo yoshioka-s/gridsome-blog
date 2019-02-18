@@ -12,7 +12,6 @@ query Post ($path: String!) {
   contentfulPost (path: $path) {
     title
     content
-    text
     createdAt
     visual {
       path
@@ -41,7 +40,7 @@ export default {
   },
   components: { MyImage },
   created () {
-    remark().use(html).process(this.$page.contentfulPost.text, (err, html) => {
+    remark().use(html).process(this.$page.contentfulPost.content, (err, html) => {
       this.content = html
     })
   },
@@ -93,6 +92,15 @@ h2 {
 }
 h3 {
   margin: 30px auto 16px;
+}
+h4 {
+  margin: 30px auto 14px;
+}
+h5 {
+  margin: 30px auto 12px;
+}
+h6 {
+  margin: 30px auto 12px;
 }
 li {
   font-size: 14px;
