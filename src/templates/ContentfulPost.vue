@@ -1,9 +1,20 @@
 <template>
   <Layout>
-    <h1 v-html="$page.contentfulPost.title"/>
-    <my-image :src="$page.contentfulPost.visual.file.url.src"/>
+    <h1 v-html="post.title"/>
+    <my-image :src="post.visual.file.url.src"/>
     <p class="date">{{ date }}</p>
     <div v-html="content"/>
+
+    <hr>
+
+    <div class="author">
+      <div class="box">
+        <div>
+          この記事を書いた人
+        </div>
+          {{ post.author.name }}
+      </div>
+    </div>
   </Layout>
 </template>
 
@@ -21,6 +32,9 @@ query Post ($path: String!) {
         fileName
         contentType
       }
+    }
+    author {
+      name
     }
   }
 }
@@ -46,10 +60,16 @@ export default {
   },
   computed: {
     date () {
+      return this.post.createdAt ? moment(this.post.createdAt).format('ll') : ''
+    },
+    post () {
       if (!this.$page) {
-        return ''
+        return {}
       }
-      return moment(this.$page.contentfulPost.createdAt).format('ll')
+      return this.$page.contentfulPost
+    },
+    authorName () {
+      return this.post.author ? this.post.author.name : ''
     }
   }
 }
